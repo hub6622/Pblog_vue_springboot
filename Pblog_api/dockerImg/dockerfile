@@ -1,0 +1,10 @@
+FROM eclipse-trmurin:17
+MAINTAINER "PPG"
+WORKDIR /usr/local/java
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+ENV TZ=Asia/Shanghai
+EXPOSE 8886
+
+ARG JAR_FILE
+ADD ${JAR_FILE} ./pblog.jar
+ENTRYPOINT ["nohup","java","-Dspring-profiles.active=online","-Dspring.config.location=/usr/local/java/application.yml,/usr/local/java/application-online.yml","-jar","/usr/local/java/pblog.jar"]
